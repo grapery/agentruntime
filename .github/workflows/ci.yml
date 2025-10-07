@@ -54,7 +54,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
           type=ref,event=branch
           type=ref,event=pr
@@ -86,7 +86,7 @@ jobs:
     - name: Deploy to staging
       run: |
         echo "Deploying to staging environment..."
-        echo "Docker镜像已构建完成: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}"
+        echo "Docker镜像已构建完成: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop"
         echo "请手动部署到测试环境或配置自动部署脚本"
 
   # 部署到生产环境
@@ -104,5 +104,5 @@ jobs:
     - name: Deploy to production
       run: |
         echo "Deploying to production environment..."
-        echo "Docker镜像已构建完成: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}"
+        echo "Docker镜像已构建完成: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
         echo "请手动部署到生产环境或配置自动部署脚本"
