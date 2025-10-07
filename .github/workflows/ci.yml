@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: crpi-kz6w8hb0pa94yvgy.cn-hangzhou.personal.cr.aliyuncs.com
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: agentruntime
   TAG: ${{ github.sha }}
 
 jobs:
