@@ -50,26 +50,14 @@ jobs:
       run: echo ${{ secrets.ACR_PASSWORD }} | docker login $REGISTRY -u ${{ secrets.ACR_USERNAME }} --password-stdin
 
         
-    - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=sha,prefix={{branch}}-
-          type=raw,value=latest,enable={{is_default_branch}}
-          
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+    - name: Build Docker image
+      run: |
+        docker build -f Dockerfile -t $REGISTRY/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
+
+    - name: Push Docker image
+      run: |
+        docker tag $REGISTRY/${{ env.IMAGE_NAME }}:${{ env.TAG }} $REGISTRY/grapery-dev/${{ env.IMAGE_NAME }}:latest
+        docker push $REGISTRY/grapery-dev/${{ env.IMAGE_NAME }}:latest
 
   # 部署到测试环境
   deploy-staging:
